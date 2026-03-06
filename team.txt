@@ -2,4 +2,8 @@ https://trello.com/b/2DnY52vi/sleep-outside-team-8
 Tanner McMillan
 Victor Vega
 Michael Bowman
+<<<<<<< HEAD
 Emmanuel Kingsley
+=======
+Jean Marc Kanda
+>>>>>>> a89ba2c (added my name in team file)
