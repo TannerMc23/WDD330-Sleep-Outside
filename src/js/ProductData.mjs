@@ -18,7 +18,7 @@ export default class ProductData {
     if(!data){
       throw new Error("no data to fetch");
     }
-    return convertToJson(data);
+    return data.json();
   }
   async findProductById(id) {
     const products = await this.getData();
