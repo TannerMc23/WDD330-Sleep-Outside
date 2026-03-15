@@ -30,8 +30,11 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
+// Counter cart
 
-//
+export const CounterCart=(list,template)=>{
+  template.innerHTML=list.length;
+}
 
 export function renderListWithTemplate(templateFn, parentElement,list,position, clear=false){
 

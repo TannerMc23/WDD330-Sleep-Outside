@@ -1,5 +1,5 @@
 
-import { getLocalStorage,setLocalStorage } from "./utils.mjs";
+import { getLocalStorage,setLocalStorage, CounterCart } from "./utils.mjs";
 
 
 
@@ -14,7 +14,10 @@ export default class productDetails {
 
   async init() {
     this.product = await this.datasource.findProductById(this.productId);
+
     this.renderProductDetails();
+    //Calling the cart counter 
+    this.cartcountrender()
 
     // add listener to Add to Cart button
     document
@@ -28,39 +31,20 @@ export default class productDetails {
   addProductToCart() {
 
     const cartItems =  getLocalStorage("so-cart") || [];
-    this.counter(cartItems);
-    this.updateCartCount();
+    cartItems.push(this.product);
+
+    // updating the cartItems
+    setLocalStorage("so-cart",cartItems);
+    console.log(cartItems);
+    
+
   }
-
-  // count product in the panier
-
-     counter(items){
-    const existingproduct = items.find((item)=>item.Id === this.product.Id);
-
-    //if the product exist then when add a 1 on the pannier
-    if(existingproduct){
-      existingproduct.quantity+=1;
-    } else{
-      const addproduct = {...this.product, quantity:1};
-      items.push(addproduct);
-    }
-    setLocalStorage("so-cart", items);
-
-    console.log(items);
-          }
-
-           updateCartCount() {
-            const cartItems = getLocalStorage("so-cart") || [];
-            const cartBadge = document.querySelector(".cart-count");
-
-            if (!cartBadge) return; // sécurité si l'élément n'existe pas
-
-              // calcule le total de quantité
-                const totalQuantity = cartItems.reduce((total, item) => total + (item.quantity || 1), 0);
-
-                  cartBadge.textContent = totalQuantity;
-
-              }
+   cartcountrender(){
+    const cart= getLocalStorage("so-cart");
+      const cartcount = document.querySelector(".cart-count");
+      CounterCart(cart,cartcount);
+   }
+ 
 }
 
 

@@ -123,11 +123,24 @@ button {
   text-align: center;
 }
 
-.cart svg {
-  width: 25px;
+.cart img {
+  width: 30px;
+}
+.cart a{
+  text-decoration: none;
 }
 
-.cart:hover svg {
+.cart a span{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  font-size: 30px;
+  color: #f0a868;
+  font-weight: bold;
+}
+
+.cart:hover img span{
   fill: gray;
 }
 
