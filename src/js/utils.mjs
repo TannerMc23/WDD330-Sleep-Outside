@@ -30,11 +30,11 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-// get the product id from the query string
 export function getParam(param) {
   const queryString = window.location.search;
-  const params = new URLSearchParams(queryString);
-  return params.get(param);
+  const urlParams = new URLSearchParams(queryString);
+  const product = urlParams.get(param);
+  return product;
 }
 
 export function renderListWithTemplate(template, parentElement, list, position = "afterbegin", clear = false) {
@@ -44,4 +44,19 @@ export function renderListWithTemplate(template, parentElement, list, position =
     parentElement.innerHTML = "";
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
+// Counter cart
+
+export const CounterCart=(list,template)=>{
+  template.innerHTML=list.length;
+}
+
+export function renderListWithTemplate(templateFn, parentElement,list,position, clear=false){
+
+  if(clear){
+    parentElement.innerHTML = "";
+  }
+
+  const htmltemplate = list.map(templateFn).join("");
+    parentElement.insertAdjacentHTML(position,htmltemplate);
+
 }

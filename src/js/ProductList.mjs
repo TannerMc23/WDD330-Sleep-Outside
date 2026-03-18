@@ -1,9 +1,9 @@
 import { renderListWithTemplate } from "./utils.mjs";
 
 function productCardTemplate(product) {
-  return `
+    return `
     <li class="product-card">
-      <a href="product_pages/?product=${product.Id}">
+      <a href="product_pages/?products=${product.Id}">
         <img src="${product.Image}" alt="${product.Name}">
         <h2>${product.Brand.Name}</h2>
         <h3>${product.Name}</h3>
@@ -14,21 +14,49 @@ function productCardTemplate(product) {
 }
 
 export default class ProductList {
-  constructor(category, dataSource, listElement) {
-    this.category = category;
-    this.dataSource = dataSource;
-    this.listElement = listElement;
-  }
+    constructor(category, dataSource, listElement) {
+        this.category = category;
+        this.dataSource = dataSource;
+        this.listElement = listElement;
+    }
 
-  async init() {
-    const list = await this.dataSource.getData();
-    this.renderList(list);
-  }
+    async init() {
+        const list = await this.dataSource.getData();
+        this.renderList(list);
+    }
 
-  renderList(list) {
-    
-    renderListWithTemplate(productCardTemplate, this.listElement, list);
+    renderList(list) {
+        const htmlStrings = list.map(productCardTemplate);
+        this.listElement.insertAdjacentHTML("afterbegin", htmlStrings.join(""));
 
-  }
+        renderListWithTemplate(productCardTemplate, this.listElement, list);
+const productCardTemplate = (product)=>{
+   return `
+       <li>
+        <a href="product_pages/?product=${product.Id}">
+            <img src="${product.Image}" alt="Image of ${product.Name}">
+            <h2 class="card__brand">${product.Brand.Name}</h2>
+            <h3 class="card__name">${product.Name}</h3>
+            <p class="product-card">$ ${product.FinalPrice}</p>
+        </a>
+       </li>
+    `;
+}
 
+
+export default class ProductList{
+    constructor(category,datasource,listElement){
+        this.category = category;
+        this.datasource = datasource;
+        this.listElement = listElement;
+    }
+    async init(){
+        const data = await this.datasource.getData();
+        this.renderList(data);
+    }
+
+    renderList(list){
+       renderListWithTemplate(productCardTemplate,this.listElement,list,"afterbegin",true)
+
+    }
 }
