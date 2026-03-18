@@ -3,10 +3,5 @@ Tanner McMillan
 Victor Vega
 Michael Bowman
 Emmanuel Kingsley
-<<<<<<< HEAD
 Franco Ermacora
 Maxwell Iwe
-=======
-Jean Marc Kanda
-
->>>>>>> e1a7b57 (fies for week01)
