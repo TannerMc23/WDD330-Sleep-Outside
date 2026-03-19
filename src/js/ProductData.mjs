@@ -14,7 +14,7 @@ export default class ProductData {
     this.path = `../json/${this.category}.json`;
   }
   async getData() {
-    const data= await fetch(this.path);
+    const data = await fetch(this.path);
     if(!data){
       throw new Error("no data to fetch");
     }

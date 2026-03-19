@@ -17,7 +17,7 @@ export function setLocalStorage(key, data) {
 //getParam function to handle URLSearchParam
 
 export function getParam(param){
-  const queryString= window.location.search;
+  const queryString = window.location.search;
   const urlParm = new URLSearchParams(queryString);
   return urlParm.get(param);
 }
@@ -32,11 +32,11 @@ export function setClick(selector, callback) {
 
 // Counter cart
 
-export const CounterCart=(list,template)=>{
-  template.innerHTML=list.length;
+export const CounterCart = (list,template)=>{
+  template.innerHTML = list.length;
 }
 
-export function renderListWithTemplate(templateFn, parentElement,list,position, clear=false){
+export function renderListWithTemplate(templateFn, parentElement,list,position, clear = false){
 
   if(clear){
     parentElement.innerHTML = "";
