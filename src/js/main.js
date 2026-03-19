@@ -9,8 +9,9 @@ const datalist = new ProductList(
   productdata,
   document.querySelector(".product-list"),
 );
-const counter = document.querySelector(".cart-count");
 datalist.init();
+
+const counter = document.querySelector(".cart-count");
 
 const cartdata = getLocalStorage("so-cart");
 
