@@ -1,11 +1,6 @@
-
-import { getLocalStorage,setLocalStorage, CounterCart } from "./utils.mjs";
-
-
-
+import { getLocalStorage, setLocalStorage, CounterCart } from "./utils.mjs";
 
 export default class productDetails {
-
   constructor(productId, datasource) {
     this.productId = productId;
     this.product = {};
@@ -16,8 +11,8 @@ export default class productDetails {
     this.product = await this.datasource.findProductById(this.productId);
 
     this.renderProductDetails();
-    //Calling the cart counter 
-    this.cartcountrender()
+    //Calling the cart counter
+    this.cartcountrender();
 
     // add listener to Add to Cart button
     document
@@ -29,24 +24,30 @@ export default class productDetails {
   }
 
   addProductToCart() {
+    let qty = 0;
+    const cartItems = getLocalStorage("so-cart") || [];
+    const item = cartItems.find((element) => element.Id === this.productId);
+    const cartqty = document.querySelector(".cart-card__quantity");
 
-    const cartItems =  getLocalStorage("so-cart") || [];
-    cartItems.push(this.product);
+    if (item) {
+      qty + 1;
 
-    // updating the cartItems
-    setLocalStorage("so-cart",cartItems);
-    console.log(cartItems);
-    
+      const searchprice = Number(item.FinalPrice);
+      //cartqty.innerHTML = qty;
 
+      console.log(`ID: ${item.Id} quantity: ${qty} Price:${searchprice}`);
+    } else {
+      cartItems.push(this.product);
+      //updating the cartItems
+      setLocalStorage("so-cart", cartItems);
+    }
   }
-   cartcountrender(){
-    const cart= getLocalStorage("so-cart");
-      const cartcount = document.querySelector(".cart-count");
-      CounterCart(cart,cartcount);
-   }
- 
+  cartcountrender() {
+    const cart = getLocalStorage("so-cart");
+    const cartcount = document.querySelector(".cart-count");
+    CounterCart(cart, cartcount);
+  }
 }
-
 
 // Template for product details
 function productTemplate(product) {
@@ -66,4 +67,3 @@ function productTemplate(product) {
 
   parent.innerHTML = details;
 }
-
