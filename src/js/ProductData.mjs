@@ -19,7 +19,7 @@ export default class ProductData {
       .then((data) => data);
   }
   async getData() {
-    const data= await fetch(this.path);
+    const data = await fetch(this.path);
     if(!data){
       throw new Error("no data to fetch");
     }

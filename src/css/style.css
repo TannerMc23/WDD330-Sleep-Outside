@@ -126,11 +126,11 @@ button {
 .cart img {
   width: 30px;
 }
-.cart a{
+.cart a {
   text-decoration: none;
 }
 
-.cart a span{
+.cart a span {
   position: absolute;
   top: 0;
   right: 0;
@@ -139,14 +139,47 @@ button {
   color: #f0a868;
   font-weight: bold;
 }
+.remove-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-.cart:hover img span{
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+  background-color: #f3f3f3;
+  color: #333;
+
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect (subtle, no animation needed) */
+.remove-item:hover {
+  background-color: #ff4d4d;
+  color: white;
+}
+.cart:hover img span {
   fill: gray;
 }
 
 .hide {
   display: none;
 }
+.cart-card {
+  position: relative;
+}
+
+.remove-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 /* End cart icon styles */
 
 .mission {
@@ -190,7 +223,7 @@ button {
   margin: 0.25em;
   padding: 0.5em;
   max-width: 250px;
-  border:  var(--dark-grey) solid 1px;
+  border: var(--dark-grey) solid 1px;
 }
 li h2,
 li h3,
@@ -198,7 +231,7 @@ li p {
   margin: 0.5em 0;
 }
 
-li a img{
+li a img {
   width: 80%;
 }
 

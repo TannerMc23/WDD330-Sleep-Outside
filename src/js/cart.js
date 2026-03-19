@@ -6,6 +6,11 @@ function renderCartContents() {
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
 
+   // attach events AFTER rendering
+  document.querySelectorAll(".remove-item").forEach(button => {
+    button.addEventListener("click", removeFromCart);
+  });
+
   displayCartTotal(cartItems);
 }
 
@@ -23,6 +28,8 @@ function cartItemTemplate(item) {
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
   <p class="cart-card__quantity">qty: 1</p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
+  <!-- dynamic ID -->
+  <span class="remove-item" data-id="${item.Id}" title="Remove item">X</span>
 </li>`;
 
   return newItem;
@@ -43,6 +50,20 @@ function displayCartTotal(cartItems) {
 
     cartTotal.innerHTML = `Total: $${total.toFixed(2)}`;
   }
+}
+function removeFromCart(event) {
+  const id = event.target.dataset.id;
+
+  let cart = getLocalStorage("so-cart") || [];
+
+  // ✅ remove item by Id
+  cart = cart.filter(item => item.Id != id);
+
+  // ✅ save updated cart
+  localStorage.setItem("so-cart", JSON.stringify(cart));
+
+  // ✅ re-render
+  renderCartContents();
 }
 
 renderCartContents();
