@@ -1,40 +1,58 @@
 import { getLocalStorage, setLocalStorage, CounterCart } from "./utils.mjs";
 
-export default class productDetails {
-  constructor(productId, datasource) {
+export default class ProductDetails {
+  constructor(productId, dataSource) {
     this.productId = productId;
     this.product = {};
-    this.datasource = datasource;
+    this.dataSource = dataSource;
   }
 
   async init() {
-    this.product = await this.datasource.findProductById(this.productId);
+    this.product = await this.dataSource.findProductById(this.productId);
 
     this.renderProductDetails();
-    //Calling the cart counter
     this.cartcountrender();
 
-    // add listener to Add to Cart button
+    console.log(document.getElementById("addToCart"));
+  }
+
+  renderProductDetails() {
+    productTemplate(this.product);
+
     document
       .getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));
   }
-  renderProductDetails() {
-    productTemplate(this.product);
-  }
 
   addProductToCart() {
+    console.log("CLICK WORKED");
     const cartItems = getLocalStorage("so-cart") || [];
-    cartItems.push(this.product);
 
-    // updating the cartItems
+    const productToAdd = {
+    Id: this.product.Id,
+    Name: this.product.Name,
+    Image: this.product.Image,
+    FinalPrice: this.product.FinalPrice,
+    Colors: this.product.Colors
+    };
+    
+    cartItems.push(productToAdd);
+
     setLocalStorage("so-cart", cartItems);
-    console.log(cartItems);
+
+    console.log("Cart updated:", cartItems);
+    console.log("Adding product:", this.product);
+    //  update counter AFTER adding
+    this.cartcountrender();
   }
+
   cartcountrender() {
-    const cart = getLocalStorage("so-cart");
+    const cart = getLocalStorage("so-cart") || [];
     const cartcount = document.querySelector(".cart-count");
-    CounterCart(cart, cartcount);
+
+    if (cartcount) {
+      CounterCart(cart, cartcount);
+    }
   }
 }
 
@@ -45,16 +63,16 @@ function productTemplate(product) {
   if(!product) return;
 
   const details = `
-                <h3>${product.Name}</h3>
-                <h2>${product.NameWithoutBrand}</h2>
-                <img  class="divider" src=${product.Image} alter="${product.NameWithoutBrand}">
-                <p class="product-card__price"> $ ${product.FinalPrice}</p>
-                <p class="product__color">${product.Colors[0].ColorName}</p>
+    <h3>${product.Name}</h3>
+    <h2>${product.NameWithoutBrand}</h2>
+    <img class="divider" src="${product.Image}" alt="${product.NameWithoutBrand}">
+    <p class="product-card__price">$${product.FinalPrice}</p>
+    <p class="product__color">${product.Colors?.[0]?.ColorName || "N/A"}</p>
 
-                 <div class="product-detail__add">
-                        <button id="addToCart" data-id = "${product.Id}">Add to Cart</button>
-                </div>
-            `;
+    <div class="product-detail__add">
+      <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+    </div>
+  `;
 
   parent.innerHTML = details;
 }

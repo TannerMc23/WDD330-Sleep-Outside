@@ -1,19 +1,13 @@
+import { loadHeaderFooter } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
-import { getLocalStorage, CounterCart } from "./utils.mjs";
 
-const productdata = new ProductData("tents");
 
-const datalist = new ProductList(
-  "tents",
-  productdata,
-  document.querySelector(".product-list"),
-);
-datalist.init();
+loadHeaderFooter();
 
-const counter = document.querySelector(".cart-count");
+const dataSource = new ProductData("tents");;
+const element = document.querySelector(".product-list");
+const productList = new ProductList("Tents", dataSource, element);
 
-const cartdata = getLocalStorage("so-cart");
+productList.init();
 
-CounterCart(cartdata, counter);
-console.log(cartdata.length);
