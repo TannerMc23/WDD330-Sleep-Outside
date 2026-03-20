@@ -1,5 +1,3 @@
-
-
 function convertToJson(res) {
   if (res.ok) {
     return res.json();
@@ -11,14 +9,12 @@ function convertToJson(res) {
 export default class ProductData {
   constructor(category) {
     this.category = category;
-    this.path = `../json/${this.category}.json`;
+    this.path = `../public/json/${this.category}.json`;
   }
-  async getData() {
-    const data = await fetch(this.path);
-    if(!data){
-      throw new Error("no data to fetch");
-    }
-    return data.json();
+  getData() {
+    return fetch(this.path)
+      .then(convertToJson)
+      .then((data) => data);
   }
   async findProductById(id) {
     const products = await this.getData();
