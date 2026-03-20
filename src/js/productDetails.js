@@ -24,29 +24,35 @@ export default class productDetails {
   }
 
   addProductToCart() {
-    let qty = 0;
     const cartItems = getLocalStorage("so-cart") || [];
-    const item = cartItems.find((element) => element.Id === this.productId);
-    const cartqty = document.querySelector(".cart-card__quantity");
 
-    if (item) {
-      qty + 1;
-
-      const searchprice = Number(item.FinalPrice);
-      //cartqty.innerHTML = qty;
-
-      console.log(`ID: ${item.Id} quantity: ${qty} Price:${searchprice}`);
-    } else {
-      cartItems.push(this.product);
-      //updating the cartItems
-      setLocalStorage("so-cart", cartItems);
-    }
+    // ADD A QUANTITY NUMBER OF ITEM, IF THE ITEM IS ADD THEN QUANTITY = 1 ELSE QUANTY +1
+    //filter the item cart to remove the null element and fint the item with the product Id.
+   findItem(cartItems, this.product)
   }
   cartcountrender() {
     const cart = getLocalStorage("so-cart");
     const cartcount = document.querySelector(".cart-count");
     CounterCart(cart, cartcount);
   }
+}
+
+function findItem(item, productid, product){
+  item
+  .filter(item=> item != null)
+  .find(element => element.Id === productid)
+  checkValidation(item, productid, product)
+}
+
+function checkValidation(item, produit, card){
+  if(item){
+    item.quantity =(!item.quantity)? 1 : item.quantity + 1;
+    const price = item.FinalPrice * item.quantity;
+    setLocalStorage("so-cart", card)
+  }
+  product.item.quantity = 1;
+  cart.push(product)
+  setLocalStorage("so-cart",cart)
 }
 
 // Template for product details
