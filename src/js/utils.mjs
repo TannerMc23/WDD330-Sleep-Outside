@@ -41,6 +41,7 @@ export function renderListWithTemplate(template, parentElement, list, position =
 // Counter cart
 
 export const CounterCart = (list,template)=>{
+  if(!list) return 0;
   template.innerHTML = list.length;
 }
 

@@ -60,6 +60,8 @@ export default class ProductDetails {
 function productTemplate(product) {
   const parent = document.querySelector(".product-detail");
 
+  if(!product) return;
+
   const details = `
     <h3>${product.Name}</h3>
     <h2>${product.NameWithoutBrand}</h2>

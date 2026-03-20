@@ -53,6 +53,9 @@ function displayCartTotal(cartItems) {
     cartTotal.innerHTML = `Total: $${total.toFixed(2)}`;
   }
 }
+
+
+
 function removeFromCart(event) {
   const id = event.target.dataset.id;
 
