@@ -26,9 +26,10 @@ export default class productDetails {
   addProductToCart() {
     const cartItems = getLocalStorage("so-cart") || [];
 
-    // ADD A QUANTITY NUMBER OF ITEM, IF THE ITEM IS ADD THEN QUANTITY = 1 ELSE QUANTY +1
-    //filter the item cart to remove the null element and fint the item with the product Id.
-   findItem(cartItems, this.product)
+    const existingitem = findrelevantCart(cartItems, this.productId);
+
+    updateCart(existingitem, this.product, cartItems);
+    saveCart(cartItems);
   }
   cartcountrender() {
     const cart = getLocalStorage("so-cart");
@@ -37,24 +38,32 @@ export default class productDetails {
   }
 }
 
-function findItem(item, productid, product){
-  item
-  .filter(item=> item != null)
-  .find(element => element.Id === productid)
-  checkValidation(item, productid, product)
+//Find relevant Cart
+export function findrelevantCart(cart, id) {
+  return cart.filter((element) => element).find((item) => item.Id === id);
 }
 
-function checkValidation(item, produit, card){
-  if(item){
-    item.quantity =(!item.quantity)? 1 : item.quantity + 1;
-    const price = item.FinalPrice * item.quantity;
-    setLocalStorage("so-cart", card)
-  }
-  product.item.quantity = 1;
-  cart.push(product)
-  setLocalStorage("so-cart",cart)
+// Updating the Cart
+function updateCart(existingitem, product, cart) {
+  !existingitem ? NewProduct(cart, product) : incrementQuantity(existingitem);
 }
 
+// Incrementation of the quantity
+function incrementQuantity(item) {
+  item.quantity = item.quantity ? item.quantity + 1 : 1;
+}
+
+// Add new Product and save this in product
+function NewProduct(cart, product) {
+  product.quantity = 1;
+  cart.push(product);
+  saveCart(cart);
+}
+
+// Save a Cart function
+function saveCart(cart) {
+  setLocalStorage("so-cart", cart);
+}
 // Template for product details
 function productTemplate(product) {
   const parent = document.querySelector(".product-detail");

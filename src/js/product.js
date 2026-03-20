@@ -7,3 +7,5 @@ const productId = getParam("product");
 
 const product = new productDetails(productId, dataSource);
 product.init();
+
+
