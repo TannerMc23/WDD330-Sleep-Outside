@@ -5,14 +5,13 @@ function renderCartContents() {
   const cartItems = getLocalStorage("so-cart");
   const htmlItems = cartItems.map((items) => cartItemTemplate(items));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
-  //const productId = getParam("product")
 
 
 document.querySelectorAll(".delete").forEach(buton=>{
   if(buton.classList.contains("delete")){
     buton.addEventListener("click",()=>{
       const productId = buton.dataset.id;
-      filterCart(cartItems,productId)
+      filterCart(productId)
     })
   }
   return;
@@ -58,7 +57,10 @@ CounterCart(cartItems,cart)
 
 // 1. find a cart by filterering empty cart
 
-function filterCart(cart, Id){
-  const list = cart.filter(item=> item.id != Id);
-    setLocalStorage("so-cart",list)
+function filterCart(Id){
+  let cart = getLocalStorage("so-cart") || [];
+
+   const updatedCart=cart.filter(item=> item.Id != Id);
+    setLocalStorage("so-cart",updatedCart)
+    return updatedCart
 }

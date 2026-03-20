@@ -39,13 +39,13 @@ export default class productDetails {
 }
 
 //Find relevant Cart
-export function findrelevantCart(cart, id) {
+ function findrelevantCart(cart, id) {
   return cart.filter((element) => element).find((item) => item.Id === id);
 }
 
 // Updating the Cart
 function updateCart(existingitem, product, cart) {
-  !existingitem ? NewProduct(cart, product) : incrementQuantity(existingitem);
+  (!existingitem) ? NewProduct(cart, product) : incrementQuantity(existingitem);
 }
 
 // Incrementation of the quantity
@@ -57,7 +57,6 @@ function incrementQuantity(item) {
 function NewProduct(cart, product) {
   product.quantity = 1;
   cart.push(product);
-  saveCart(cart);
 }
 
 // Save a Cart function
