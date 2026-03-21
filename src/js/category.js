@@ -1,16 +1,15 @@
-import { getParam, getLocalStorage, CounterCart} from "./utils.mjs";
-import ProductData from "./ProductData.mjs"
-import ProductList from "./ProductList.mjs"
-
+import { getParam, getLocalStorage, CounterCart } from "./utils.mjs";
+import ProductData from "./ProductData.mjs";
+import ProductList from "./ProductList.mjs";
 
 const category = getParam("category");
 console.log(category);
 
 const productdata = new ProductData(category);
 
-// print the category 
+// print the category
 
-document.querySelector(".category").innerHTML = category
+document.querySelector(".category").innerHTML = category;
 
 const datalist = new ProductList(
   category,
@@ -18,7 +17,7 @@ const datalist = new ProductList(
   document.querySelector(".product-list"),
 );
 
-datalist.init()
+datalist.init();
 
 const counter = document.querySelector(".cart-count");
 

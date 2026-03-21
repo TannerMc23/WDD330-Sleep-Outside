@@ -1,6 +1,4 @@
-
 import { getLocalStorage, CounterCart } from "./utils.mjs";
-
 
 const counter = document.querySelector(".cart-count");
 

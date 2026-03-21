@@ -128,7 +128,7 @@ p {
 .logo--square > div {
   margin-top: -1.7em;
 }
-.category{
+.category {
   text-transform: capitalize;
   color: #8a470c;
   padding: 0.5rem;
@@ -208,18 +208,17 @@ button {
   margin-top: 2rem;
   padding: 1rem;
 }
-.products h2{
+.products h2 {
   margin-bottom: 1rem;
 }
 
 .product-list {
-  
   display: flex;
   flex-flow: row wrap;
   list-style-type: none;
   justify-content: space-evenly;
 }
-.product-list li{
+.product-list li {
   margin: 0.5rem;
   text-align: center;
   border-radius: 1rem;
@@ -229,14 +228,14 @@ button {
   text-decoration: none;
   color: var(--dark-grey);
 }
-.box{
+.box {
   display: flex;
 }
-.box h1 a{
-  flex: 1 ;
+.box h1 a {
+  flex: 1;
 }
 
-.box h1 a:hover{
+.box h1 a:hover {
   color: #f0a868;
 }
 

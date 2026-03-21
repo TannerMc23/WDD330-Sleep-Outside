@@ -39,13 +39,13 @@ export default class productDetails {
 }
 
 //Find relevant Cart
- function findrelevantCart(cart, id) {
+function findrelevantCart(cart, id) {
   return cart.filter((element) => element).find((item) => item.Id === id);
 }
 
 // Updating the Cart
 function updateCart(existingitem, product, cart) {
-  (!existingitem) ? NewProduct(cart, product) : incrementQuantity(existingitem);
+  !existingitem ? NewProduct(cart, product) : incrementQuantity(existingitem);
 }
 
 // Incrementation of the quantity
@@ -66,8 +66,10 @@ function saveCart(cart) {
 // Template for product details
 function productTemplate(product) {
   const parent = document.querySelector(".product-detail");
-    let sourceimg="";
-    (typeof product.Images === "string")? sourceimg= product.Images : sourceimg = product.Images.PrimaryMedium ?? "";
+  let sourceimg = "";
+  typeof product.Images === "string"
+    ? (sourceimg = product.Images)
+    : (sourceimg = product.Images.PrimaryMedium ?? "");
   const details = `
                 <h3>${product.Name}</h3>
                 <h2>${product.NameWithoutBrand}</h2>
