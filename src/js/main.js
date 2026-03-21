@@ -1,8 +1,8 @@
+import { loadHeaderFooter } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
 import { getLocalStorage, CounterCart } from "./utils.mjs";
 
-const productdata = new ProductData("tents");
 
 const datalist = new ProductList(
   "tents",

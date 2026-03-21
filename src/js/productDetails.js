@@ -4,23 +4,25 @@ export default class productDetails {
   constructor(productId, datasource) {
     this.productId = productId;
     this.product = {};
-    this.datasource = datasource;
+    this.dataSource = dataSource;
   }
 
   async init() {
-    this.product = await this.datasource.findProductById(this.productId);
+    this.product = await this.dataSource.findProductById(this.productId);
 
     this.renderProductDetails();
     //Calling the cart counter
     this.cartcountrender();
 
-    // add listener to Add to Cart button
+    console.log(document.getElementById("addToCart"));
+  }
+
+  renderProductDetails() {
+    productTemplate(this.product);
+
     document
       .getElementById("addToCart")
       .addEventListener("click", this.addProductToCart.bind(this));
-  }
-  renderProductDetails() {
-    productTemplate(this.product);
   }
 
   addProductToCart() {
@@ -75,10 +77,10 @@ function productTemplate(product) {
                 <p class="product-card__price"> $ ${product.FinalPrice}</p>
                 <p class="product__color">${product.Colors[0].ColorName}</p>
 
-                 <div class="product-detail__add">
-                        <button id="addToCart" data-id = "${product.Id}">Add to Cart</button>
-                </div>
-            `;
+    <div class="product-detail__add">
+      <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+    </div>
+  `;
 
   parent.innerHTML = details;
 }

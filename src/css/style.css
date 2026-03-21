@@ -179,9 +179,37 @@ button {
   color: #f0a868;
   font-weight: bold;
 }
+.remove-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+  background-color: #f3f3f3;
+  color: #333;
+
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 
 .cart:hover img span {
   fill: gray;
+}
+
+.hide {
+  display: none;
+}
+.cart-card {
+  position: relative;
+}
+
+.remove-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 /* End cart icon styles */
