@@ -2,8 +2,12 @@ import { getParam } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import productDetails from "./productDetails.js";
 
-const dataSource = new ProductData("tents");
-const productId = getParam("products");
 
-const product = new productDetails(productId, dataSource);
+const category = getParam("category");
+const productId = getParam("product");
+const datasource = new ProductData(category)
+
+const product = new productDetails(productId, datasource);
 product.init();
+
+

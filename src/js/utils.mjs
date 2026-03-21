@@ -39,17 +39,15 @@ export function renderListWithTemplate(template, parentElement, list, position =
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 // Counter cart
+    export const CounterCart=(list,template)=>{
+      if(!list || !template) return;
+      
+      template.innerHTML=list.length;
+    }
 
-export const CounterCart = (list,template)=>{
-  if(!list) return 0;
-  template.innerHTML = list.length;
-}
-
-
-export function renderWithTemplate(template, parentElement, data, callback) {
-  parentElement.innerHTML = template;
-  if (callback) {
-    callback(data);
+export function renderListWithTemplate(templateFn, parentElement,list,position, clear=false){
+  if(clear){
+    parentElement.innerHTML = "";
   }
 }
 

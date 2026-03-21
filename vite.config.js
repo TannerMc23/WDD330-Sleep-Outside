@@ -1,4 +1,4 @@
-import { resolve } from "path";
+import { dirname, resolve } from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -25,6 +25,8 @@ export default defineConfig({
           "src/product_pages/northface-talus-4.html",
         ),
         product: resolve(__dirname, "src/product_pages/index.html"),
+        product_listing: resolve(__dirname, "src/product_listing/index.html"),
+        category: resolve(__dirname, "src/category/index.html")
       },
     },
   },
