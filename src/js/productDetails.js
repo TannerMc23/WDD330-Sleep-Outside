@@ -66,11 +66,12 @@ function saveCart(cart) {
 // Template for product details
 function productTemplate(product) {
   const parent = document.querySelector(".product-detail");
-
+    let sourceimg="";
+    (typeof product.Images === "string")? sourceimg= product.Images : sourceimg = product.Images.PrimaryMedium ?? "";
   const details = `
                 <h3>${product.Name}</h3>
                 <h2>${product.NameWithoutBrand}</h2>
-                <img  class="divider" src=${product.Image} alter="${product.NameWithoutBrand}">
+                <img  class="divider" src=${sourceimg} alter="${product.NameWithoutBrand}">
                 <p class="product-card__price"> $ ${product.FinalPrice}</p>
                 <p class="product__color">${product.Colors[0].ColorName}</p>
 
