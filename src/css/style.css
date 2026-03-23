@@ -293,6 +293,12 @@ li a img {
   grid-column: 3;
 }
 
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
