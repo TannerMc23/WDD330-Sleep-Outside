@@ -13,6 +13,6 @@ const productList = new ProductList("Tents", dataSource, element);
 productList.init();
 
 document.addEventListener('DOMContentLoaded', () => {
-  const alertSystem = new Alert('/alerts.json');
+  const alertSystem = new Alert('/src/public/json/alerts.json');
   alertSystem.init();
 });
