@@ -24,8 +24,6 @@ function cartItemTemplate(item) {
       : typeof item.Images === "string"
       ? item.Images // tents.json
       : item.Images.PrimaryMedium ?? item.Images.PrimarySmall ?? "";
-  
-      
 
   const newItem = `
   <div class="box">
