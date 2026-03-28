@@ -344,3 +344,13 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+.breadcrumb {
+  font-size: 0.9rem;
+  margin: 10px 20px;
+  color: #555;
+}
+
+.breadcrumb span {
+  font-weight: bold;
+}
