@@ -66,6 +66,9 @@ function saveCart(cart) {
 // Template for product details
 function productTemplate(product) {
   const parent = document.querySelector(".product-detail");
+  // Destructuring
+  // const [Images,Name,NameWithoutBrand,FinalPrice,Colors,Id]=product
+
   let sourceimg = "";
   typeof product.Images === "string"
     ? (sourceimg = product.Images)

@@ -1,7 +1,9 @@
 import { getLocalStorage, setLocalStorage, CounterCart } from "./utils.mjs";
 
+const cartItems = getLocalStorage("so-cart");
+const cart = document.querySelector(".cart-count");
+
 function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart");
   const htmlItems = cartItems.map((items) => cartItemTemplate(items));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
 
@@ -17,11 +19,9 @@ function renderCartContents() {
 }
 
 function cartItemTemplate(item) {
-
-  const sourceimg =
-    !item.Images
-      ? "" // pas d'image
-      : typeof item.Images === "string"
+  const sourceimg = !item.Images
+    ? "" // pas d'image
+    : typeof item.Images === "string"
       ? item.Images // tents.json
       : item.Images.PrimaryMedium ?? item.Images.PrimarySmall ?? "";
 
@@ -53,8 +53,6 @@ function cartItemTemplate(item) {
 renderCartContents();
 
 // Count Cart
-const cartItems = getLocalStorage("so-cart");
-const cart = document.querySelector(".cart-count");
 
 CounterCart(cartItems, cart);
 
@@ -63,9 +61,21 @@ CounterCart(cartItems, cart);
 // 1. find a cart by filterering empty cart
 
 function filterCart(Id) {
-  let cart = getLocalStorage("so-cart") || [];
+  let cartlist = getLocalStorage("so-cart") || [];
 
-  const updatedCart = cart.filter((item) => item.Id != Id);
+  const updatedCart = cartlist.filter((item) => item.Id != Id);
   setLocalStorage("so-cart", updatedCart);
   return updatedCart;
 }
+
+// Calculate Cart Total
+
+function calculateCartTotal() {
+  const qty = cartItems.reduce(
+    (sum, item) => sum + item.quantity * item.FinalPrice,
+    0,
+  );
+  document.querySelector(".Total").innerHTML = ` Total: $${qty.ToFixed(2)}`;
+}
+
+calculateCartTotal();

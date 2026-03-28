@@ -32,6 +32,7 @@ export function setClick(selector, callback) {
 
 // Counter cart
     export const CounterCart=(list,template)=>{
+     //template && list && (template.innerHTML = list.length);
       if(!list || !template) return;
       
       template.innerHTML=list.length;
