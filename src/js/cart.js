@@ -50,6 +50,40 @@ function cartItemTemplate(item) {
   return newItem;
 }
 
+function displayCartTotal(cartItems) {
+  if (cartItems && cartItems.length > 0) {
+    const cartFooter = document.querySelector(".cart-footer");
+    const cartTotal = document.querySelector(".cart-total");
+
+    cartFooter.classList.remove("hide");
+
+    let total = 0;
+
+    cartItems.forEach((item) => {
+      total += item.FinalPrice;
+    });
+
+    cartTotal.innerHTML = `Total: $${total.toFixed(2)}`;
+  }
+}
+
+
+
+function removeFromCart(event) {
+  const id = event.target.dataset.id;
+
+  let cart = getLocalStorage("so-cart") || [];
+
+  // ✅ remove item by Id
+  cart = cart.filter(item => item.Id != id);
+
+  // ✅ save updated cart
+  localStorage.setItem("so-cart", JSON.stringify(cart));
+
+  // ✅ re-render
+  renderCartContents();
+}
+
 renderCartContents();
 
 // Count Cart
