@@ -18,20 +18,13 @@ const productCardTemplate = (product, category)=>{
 
 // Liste of product
 
-export default class ProductList{
-    constructor(category,datasource,listElement){
-        this.category = category;
-        this.datasource = datasource;
-        this.listElement = listElement;
-    }
-    async init(){
-        const data = await this.datasource.getData();
-        this.renderList(data);
-    }
+  async init() {
+    const list = await this.dataSource.getData();
+    this.renderList(list);
+  }
 
     renderList(list){
         const templateWithcategory = (product)=>productCardTemplate(product, this.category)
        renderListWithTemplate(templateWithcategory,this.listElement,list,"afterbegin",true)
 
-    }
 }
