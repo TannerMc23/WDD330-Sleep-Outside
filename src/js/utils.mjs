@@ -13,7 +13,16 @@ export function getLocalStorage(key) {
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+ // remove an Item from localStorage
+export function removeItem(key){
+  localStorage.removeItem(key)
+}
 
+// Redirection to another page
+
+export function redirectTo(path){
+  window.location.href = path;
+}
 //getParam function to handle URLSearchParam
 
 export function getParam(param){
@@ -46,4 +55,34 @@ export function renderListWithTemplate(templateFn, parentElement,list,position, 
   const htmltemplate = list.map(templateFn).join("");
     parentElement.insertAdjacentHTML(position,htmltemplate);
 
+}
+
+// Customizing the Alert messages
+
+export function alertMessage(message, scroll = true) {
+  const main = document.querySelector('main');
+  if (!main) return;
+
+  // Create an alerte container
+  const alert = document.createElement('div');
+  alert.classList.add('alert'); 
+
+  // HTML Content : texte + bouton X
+  alert.innerHTML = `
+    <span class="alert-text">${message}</span>
+    <button class="alert-close" aria-label="Close">&times;</button>
+  `;
+
+  // Logic to close the alert
+  alert.addEventListener('click', (e) => {
+    if (e.target.classList.contains('alert-close')) {
+      main.removeChild(alert);
+    }
+  });
+
+  // Insert into the main as firt chold
+  main.prepend(alert);
+
+  // Scroll up
+  if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }

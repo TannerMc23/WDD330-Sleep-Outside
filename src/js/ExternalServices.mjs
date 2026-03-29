@@ -1,12 +1,23 @@
 
 
-function convertToJson(res) {
+const baseURL = import.meta.env.VITE_SERVER_URL;
+
+
+async function convertToJson(res) {
+  const jsonResponse = await res.json(); // 🔥 lire d'abord le body
+
   if (res.ok) {
-    return res.json();
+    return jsonResponse;
   } else {
-    throw new Error("Bad Response");
+    // envoyer une erreur personnalisée
+    throw {
+      name: "servicesError",
+      message: jsonResponse
+    };
   }
 }
+
+
 
 function option(verb, data = null) {
   return {
@@ -21,10 +32,9 @@ function option(verb, data = null) {
 export default class ExternalServices {
   constructor(category) {
     this.category = category;
-    this.path = `../json/${this.category}.json`;
   }
   async getData() {
-    const data= await fetch(this.path);
+    const data= await fetch(baseURL + `products/search/${this.category}`);
     if(!data){
       throw new Error("no data to fetch");
     }
@@ -47,10 +57,21 @@ export default class ExternalServices {
   }
 
    async checkout(order){
-    const res = await fetch(this.path, option("POST", order))
+    const res = await fetch(baseURL, option("POST", order))
     const Result = await res.json()
     return Result;
 }
+
+async checkout(payload) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    };
+    return await fetch(baseURL + "checkout/", options).then(convertToJson);
+  }
  
 }
 

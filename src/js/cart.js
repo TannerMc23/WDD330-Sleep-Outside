@@ -75,7 +75,7 @@ function calculateCartTotal() {
     (sum, item) => sum + item.quantity * item.FinalPrice,
     0,
   );
-  document.querySelector(".Total").innerHTML = ` Total: $${qty.ToFixed(2)}`;
+  document.querySelector(".Total").innerHTML = ` Total: $${qty.toFixed(2)}`;
 }
 
 calculateCartTotal();

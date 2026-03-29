@@ -1,4 +1,5 @@
 import { getLocalStorage, setLocalStorage, CounterCart } from "./utils.mjs";
+import { alertMessage } from "./utils.mjs";
 
 export default class productDetails {
   constructor(productId, datasource) {
@@ -30,6 +31,8 @@ export default class productDetails {
 
     updateCart(existingitem, this.product, cartItems);
     saveCart(cartItems);
+
+    alertMessage("product added")
   }
   cartcountrender() {
     const cart = getLocalStorage("so-cart");

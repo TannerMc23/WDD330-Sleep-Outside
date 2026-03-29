@@ -1,5 +1,6 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, removeItem,redirectTo } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
+import { alertMessage } from "./utils.mjs";
 
 export default class CheckoutProcess{
     constructor(key, outputSelector){
@@ -23,7 +24,7 @@ export default class CheckoutProcess{
         // const subtotal = document.querySelector("#subtotal");
          
         this.itemTotal = this.List.reduce((sum,item)=>{
-            return sum + (Number(item.quantity || 1 )+ item.FinalPrice)
+            return sum + (Number(item.quantity || 1 ) *  item.FinalPrice)
         },0)
 
         document.querySelector(`${this.outputSelector} #subtotal`).innerText = (this.itemTotal).toFixed(1);
@@ -54,18 +55,31 @@ export default class CheckoutProcess{
     }
 
     async checkout(form){
-        const formData = new FormData(form);
-        const order = formDataToJSON(form);
+        try {
+            const formData = new FormData(form);
+            const order = formDataToJSON(form);
 
-        order.items = packgeItems(getLocalStorage(this.key))
-       order.orderDate = new Date().toISOString();
+            order.items = packgeItems(getLocalStorage(this.key))
+            order.orderDate = new Date().toISOString();
+            const instance = new ExternalServices(this.key);
+            console.log(order);
+            const result = await instance.checkout(order)
 
-        const instance = new ExternalServices(this.key);
-        const result = instance.checkout(order)
+            if(result){
+                removeItem(this.key)
+                redirectTo("./checkout/success.html")
+            }
+            console.log(result);
+            
+            return result
+            
 
-        console.log(result);
-        
-        
+       } catch (error) {
+          console.log("checkout error", error);
+        //    const msg = error.message? message || "Something went wrong during checkout";
+           alertMessage(JSON.stringify(error.message,null, 2)
+           );
+       } 
     }
 }
 
@@ -78,15 +92,24 @@ export default class CheckoutProcess{
         }))
 }
 
+
 function formDataToJSON(formElement){
-   const formData = new FormData(formElement)
-   const convertedJSON = {}
-
-   formData.forEach((key,value)=>{
-    convertedJSON[key] = value;
-   })
-
-   return convertedJSON;
+  return {
+    fname: formElement.querySelector("#firstName").value.trim(),
+    lname: formElement.querySelector("#lastName").value.trim(),
+    address: {
+      street: formElement.querySelector("#street").value.trim(),
+      city: formElement.querySelector("#city").value.trim(),
+      state: formElement.querySelector("#state").value.trim(),
+      zip: formElement.querySelector("#zip").value.trim()
+    },
+    cardNumber: formElement.querySelector("#cardNumber").value.replace(/\D/g,''),
+    expiration: (() => {
+      const [year, month] = formElement.querySelector("#expDate").value.split("-");
+      return `${month}/${year.slice(-2)}`; // MM/YY
+    })(),
+    cvv: formElement.querySelector("#cvv").value.trim()
+  };
 }
 
 
