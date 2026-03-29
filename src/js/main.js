@@ -1,18 +1,18 @@
-import { loadHeaderFooter, renderBreadcrumb } from "./utils.mjs";
-// import ProductData from "./ProductData.mjs";
-// import ProductList from "./ProductList.mjs";
-import Alert from './Alert.js';
+import ExternalServices from "./ExternalServices.mjs";
+import ProductList from "./ProductList.mjs";
+import { getLocalStorage, CounterCart } from "./utils.mjs";
 
-loadHeaderFooter();
-renderBreadcrumb(null);
+document.addEventListener("DOMContentLoaded", () => {
+  const productdata = new ExternalServices("tents");
 
-// const dataSource = new ProductData("tents");;
-// const element = document.querySelector(".product-list");
-// const productList = new ProductList("Tents", dataSource, element);
+  const datalist = new ProductList(
+    "tents",
+    productdata,
+    document.querySelector(".product-list"),
+  );
+  const counter = document.querySelector(".cart-count");
+  datalist.init();
 
-// productList.init();
-
-// document.addEventListener('DOMContentLoaded', () => {
-//   const alertSystem = new Alert('/src/public/json/alerts.json');
-//   alertSystem.init();
-// });
+  const cartdata = getLocalStorage("so-cart");
+  CounterCart(cartdata, counter);
+});
