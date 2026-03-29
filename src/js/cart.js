@@ -1,39 +1,51 @@
-import { getLocalStorage, loadHeaderFooter } from "./utils.mjs";
-import ShoppingCart from "./ShoppingCart.mjs";
+import { getLocalStorage, setLocalStorage, CounterCart } from "./utils.mjs";
 
-loadHeaderFooter();
+const cartItems = getLocalStorage("so-cart");
+const cart = document.querySelector(".cart-count");
 
 function renderCartContents() {
-  const cartItems = getLocalStorage("so-cart") || [];
-
-  const htmlItems = cartItems.map((item) => cartItemTemplate(item));
+  const htmlItems = cartItems.map((items) => cartItemTemplate(items));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
 
-   // attach events AFTER rendering
-  document.querySelectorAll(".remove-item").forEach(button => {
-    button.addEventListener("click", removeFromCart);
+  document.querySelectorAll(".delete").forEach((buton) => {
+    if (buton.classList.contains("delete")) {
+      buton.addEventListener("click", () => {
+        const productId = buton.dataset.id;
+        filterCart(productId);
+      });
+    }
+    return;
   });
-
-  displayCartTotal(cartItems);
 }
 
 function cartItemTemplate(item) {
-  const newItem = `<li class="cart-card divider">
+  const sourceimg = !item.Images
+    ? "" // pas d'image
+    : typeof item.Images === "string"
+      ? item.Images // tents.json
+      : item.Images.PrimaryMedium ?? item.Images.PrimarySmall ?? "";
+
+  const newItem = `
+  <div class="box">
+    <li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
-      src="${item.Image}"
-      alt="${item.Name}"
+      src="${sourceimg}"
+      alt="${sourceimg}"
     />
   </a>
   <a href="#">
     <h2 class="card__name">${item.Name}</h2>
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">qty: 1</p>
+  <p class="cart-card__quantity">qty: ${item.quantity}</p>
   <p class="cart-card__price">$${item.FinalPrice}</p>
-  <!-- dynamic ID -->
-  <span class="remove-item" data-id="${item.Id}" title="Remove item">X</span>
-</li>`;
+</li>
+    <h1 class="delete" data-id="${item.Id}">
+  <a href="#">x</a>
+</h1>
+  </div>
+  `;
 
   return newItem;
 }
@@ -74,9 +86,30 @@ function removeFromCart(event) {
 
 renderCartContents();
 
-const cart = new ShoppingCart("so-cart", ".product-list");
-cart.init();
-if (cart.total > 0) {
-  // show our checkout button and total if there are items in the cart.
-  document.querySelector(".list-footer").classList.remove("hide");
+// Count Cart
+
+CounterCart(cartItems, cart);
+
+//DELETE WORKFLOW
+
+// 1. find a cart by filterering empty cart
+
+function filterCart(Id) {
+  let cartlist = getLocalStorage("so-cart") || [];
+
+  const updatedCart = cartlist.filter((item) => item.Id != Id);
+  setLocalStorage("so-cart", updatedCart);
+  return updatedCart;
 }
+
+// Calculate Cart Total
+
+function calculateCartTotal() {
+  const qty = cartItems.reduce(
+    (sum, item) => sum + item.quantity * item.FinalPrice,
+    0,
+  );
+  document.querySelector(".Total").innerHTML = ` Total: $${qty.toFixed(2)}`;
+}
+
+calculateCartTotal();

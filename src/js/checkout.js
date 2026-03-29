@@ -1,17 +1,24 @@
-import { loadHeaderFooter } from "./utils.mjs";
 import CheckoutProcess from "./CheckoutProcess.mjs";
+//import ExternalServices from "./ExternalServices.mjs";
+import { CounterCart, getLocalStorage } from "./utils.mjs";
 
-loadHeaderFooter();
+document.addEventListener("DOMContentLoaded", async () => {
+  const element = getLocalStorage("so-cart");
+  const count = document.querySelector(".cart-count");
+  CounterCart(element, count);
 
-const myCheckout = new CheckoutProcess("so-cart", ".checkout-summary");
-myCheckout.init();
+  const form = document.querySelector("#checkoutForm");
+  const process = new CheckoutProcess("so-cart", ".order-summary");
+  process.init();
 
-document
-  .querySelector("#zip")
-  .addEventListener("blur", myCheckout.calculateOrdertotal.bind(myCheckout));
-// listening for click on the button
-document.querySelector("#checkoutSubmit").addEventListener("click", (e) => {
-  e.preventDefault();
+  document.querySelector(".btn").addEventListener("click", async (event) => {
+    event.preventDefault();
+    const isValid = form.checkValidity();
+    form.reportValidity();
 
-  myCheckout.checkout();
+    if (!isValid) {
+      return;
+    }
+    await process.checkout(form);
+  });
 });

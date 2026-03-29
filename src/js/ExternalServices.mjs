@@ -1,29 +1,68 @@
-const baseURL = "http://server-nodejs.cit.byui.edu:3000/";
+
+
+const baseURL = import.meta.env.VITE_SERVER_URL;
+
+
 async function convertToJson(res) {
-  const data = await res.json();
+  const jsonResponse = await res.json(); // 🔥 lire d'abord le body
+
   if (res.ok) {
-    return data;
+    return jsonResponse;
   } else {
-    throw { name: "servicesError", message: data };
+    // envoyer une erreur personnalisée
+    throw {
+      name: "servicesError",
+      message: jsonResponse
+    };
   }
+}
+
+
+
+function option(verb, data = null) {
+  return {
+    method: verb,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: data ?  JSON.stringify(data) : null
+  };
 }
 
 export default class ExternalServices {
   constructor(category) {
-    // this.category = category;
-    // this.path = `../json/${this.category}.json`;
+    this.category = category;
   }
-  async getData(category) {
-    const response = await fetch(baseURL + `products/search/${category}`);
-    const data = await convertToJson(response);
-    return data.Result;
+  async getData() {
+    const data= await fetch(baseURL + `products/search/${this.category}`);
+    if(!data){
+      throw new Error("no data to fetch");
+    }
+    const response = await convertToJson(data);
+    const list = await response.Result ?? response;
+     
+
+    if (!Array.isArray(list)) {
+      console.warn("getData() did not return an array:", list);
+      return [];
+    }
+    return list
+    ;
   }
+
+
   async findProductById(id) {
-    const response = await fetch(baseURL + `product/${id}`);
-    const data = await convertToJson(response);
-    return data.Result;
+    const products = await this.getData();
+    return products.find((item) => item.Id === id);
   }
-  async checkout(payload) {
+
+   async checkout(order){
+    const res = await fetch(baseURL, option("POST", order))
+    const Result = await res.json()
+    return Result;
+}
+
+async checkout(payload) {
     const options = {
       method: "POST",
       headers: {
@@ -33,4 +72,6 @@ export default class ExternalServices {
     };
     return await fetch(baseURL + "checkout/", options).then(convertToJson);
   }
+ 
 }
+

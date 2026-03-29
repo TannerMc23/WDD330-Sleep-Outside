@@ -13,6 +13,23 @@ export function getLocalStorage(key) {
 export function setLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+ // remove an Item from localStorage
+export function removeItem(key){
+  localStorage.removeItem(key)
+}
+
+// Redirection to another page
+
+export function redirectTo(path){
+  window.location.href = path;
+}
+//getParam function to handle URLSearchParam
+
+export function getParam(param){
+  const queryString= window.location.search;
+  const urlParm = new URLSearchParams(queryString);
+  return urlParm.get(param);
+}
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
   qs(selector).addEventListener("touchend", (event) => {
@@ -39,17 +56,16 @@ export function renderListWithTemplate(template, parentElement, list, position =
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
 // Counter cart
+    export const CounterCart=(list,template)=>{
+     //template && list && (template.innerHTML = list.length);
+      if(!list || !template) return;
+      
+      template.innerHTML=list.length;
+    }
 
-export const CounterCart = (list,template)=>{
-  if(!list) return 0;
-  template.innerHTML = list.length;
-}
-
-
-export function renderWithTemplate(template, parentElement, data, callback) {
-  parentElement.innerHTML = template;
-  if (callback) {
-    callback(data);
+export function renderListWithTemplate(templateFn, parentElement,list,position, clear=false){
+  if(clear){
+    parentElement.innerHTML = "";
   }
 }
 
@@ -70,46 +86,34 @@ export async function loadHeaderFooter() {
   renderWithTemplate(footerTemplate, footerElement);
 }
 
+}
 
-export function alertMessage(message, scroll = true, duration = 3000) {
-  const alert = document.createElement("div");
-  alert.classList.add("alert");
-  alert.innerHTML = `<p>${message}</p><span>X</span>`;
+// Customizing the Alert messages
 
-  alert.addEventListener("click", function (e) {
-    if (e.target.tagName == "SPAN") {
-      main.removeChild(this);
+export function alertMessage(message, scroll = true) {
+  const main = document.querySelector('main');
+  if (!main) return;
+
+  // Create an alerte container
+  const alert = document.createElement('div');
+  alert.classList.add('alert'); 
+
+  // HTML Content : texte + bouton X
+  alert.innerHTML = `
+    <span class="alert-text">${message}</span>
+    <button class="alert-close" aria-label="Close">&times;</button>
+  `;
+
+  // Logic to close the alert
+  alert.addEventListener('click', (e) => {
+    if (e.target.classList.contains('alert-close')) {
+      main.removeChild(alert);
     }
   });
-  const main = document.querySelector("main");
+
+  // Insert into the main as firt chold
   main.prepend(alert);
-  if (scroll) window.scrollTo(0, 0);
 
-}
-
-export function removeAllAlerts() {
-  const alerts = document.querySelectorAll(".alert");
-  alerts.forEach((alert) => document.querySelector("main").removeChild(alert));
-}
-
-export function renderBreadcrumb(category, count = null, isProductPage = false) {
-  const breadcrumb = document.getElementById("breadcrumb");
-
-  // If breadcrumb doesn't exist OR no category → hide
-  if (!breadcrumb || !category) {
-    if (breadcrumb) breadcrumb.style.display = "none";
-    return;
-  }
-
-  breadcrumb.style.display = "block";
-
-  // Format category nicely
-  const formattedCategory =
-    category.charAt(0).toUpperCase() + category.slice(1);
-
-  if (isProductPage) {
-    breadcrumb.innerHTML = `<span>${formattedCategory}</span>`;
-  } else {
-    breadcrumb.innerHTML = `<span>${formattedCategory}</span> -> (${count} items)`;
-  }
+  // Scroll up
+  if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }

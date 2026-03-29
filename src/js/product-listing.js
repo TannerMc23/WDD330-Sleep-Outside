@@ -1,18 +1,6 @@
-import { loadHeaderFooter, getParam, renderBreadcrumb } from "./utils.mjs";
-import ExternalServices from "./ExternalServices.mjs";
-import ProductList from "./ProductList.mjs";
+import { getLocalStorage, CounterCart } from "./utils.mjs";
 
-async function initPage() {
-  loadHeaderFooter();
+const counter = document.querySelector(".cart-count");
 
-  const category = getParam("category");
-  const dataSource = new ExternalServices();
-  const element = document.querySelector(".product-list");
-  const listing = new ProductList(category, dataSource, element);
-
-  await listing.init();
-
-  renderBreadcrumb(category, element.children.length);
-}
-
-initPage();
+const cartdata = getLocalStorage("so-cart");
+CounterCart(cartdata, counter);
