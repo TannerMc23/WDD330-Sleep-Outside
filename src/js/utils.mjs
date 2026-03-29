@@ -59,30 +59,31 @@ export function renderListWithTemplate(templateFn, parentElement,list,position, 
 
 // Customizing the Alert messages
 
+// utils.mjs
 export function alertMessage(message, scroll = true) {
-  const main = document.querySelector('main');
-  if (!main) return;
-
-  // Create an alerte container
+  // Création de l'élément alert
   const alert = document.createElement('div');
-  alert.classList.add('alert'); 
-
-  // HTML Content : texte + bouton X
+  alert.classList.add('alert');
   alert.innerHTML = `
     <span class="alert-text">${message}</span>
-    <button class="alert-close" aria-label="Close">&times;</button>
+    <button class="alert-close">&times;</button>
   `;
 
-  // Logic to close the alert
-  alert.addEventListener('click', (e) => {
-    if (e.target.classList.contains('alert-close')) {
-      main.removeChild(alert);
-    }
+  // Ajout de l'animation d'entrée
+  alert.classList.add('slide-in');
+
+  // Listener sur le bouton de fermeture
+  alert.querySelector('.alert-close').addEventListener('click', () => {
+    alert.classList.remove('slide-in');
+    alert.classList.add('slide-out');
+    // Supprime l'élément après l'animation
+    alert.addEventListener('animationend', () => alert.remove());
   });
 
-  // Insert into the main as firt chold
+  // Ajouter l'alerte en haut du main
+  const main = document.querySelector('main');
   main.prepend(alert);
 
-  // Scroll up
+  // Scroll vers le haut si demandé
   if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
