@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage, CounterCart } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, CounterCart, renderBreadcrumb } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -12,6 +12,8 @@ export default class ProductDetails {
 
     this.renderProductDetails();
     this.cartcountrender();
+
+    renderBreadcrumb(this.product.Category, null, true);
 
     console.log(document.getElementById("addToCart"));
   }

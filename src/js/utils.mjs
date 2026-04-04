@@ -71,3 +71,45 @@ export async function loadHeaderFooter() {
 }
 
 
+export function alertMessage(message, scroll = true, duration = 3000) {
+  const alert = document.createElement("div");
+  alert.classList.add("alert");
+  alert.innerHTML = `<p>${message}</p><span>X</span>`;
+
+  alert.addEventListener("click", function (e) {
+    if (e.target.tagName == "SPAN") {
+      main.removeChild(this);
+    }
+  });
+  const main = document.querySelector("main");
+  main.prepend(alert);
+  if (scroll) window.scrollTo(0, 0);
+
+}
+
+export function removeAllAlerts() {
+  const alerts = document.querySelectorAll(".alert");
+  alerts.forEach((alert) => document.querySelector("main").removeChild(alert));
+}
+
+export function renderBreadcrumb(category, count = null, isProductPage = false) {
+  const breadcrumb = document.getElementById("breadcrumb");
+
+  // If breadcrumb doesn't exist OR no category → hide
+  if (!breadcrumb || !category) {
+    if (breadcrumb) breadcrumb.style.display = "none";
+    return;
+  }
+
+  breadcrumb.style.display = "block";
+
+  // Format category nicely
+  const formattedCategory =
+    category.charAt(0).toUpperCase() + category.slice(1);
+
+  if (isProductPage) {
+    breadcrumb.innerHTML = `<span>${formattedCategory}</span>`;
+  } else {
+    breadcrumb.innerHTML = `<span>${formattedCategory}</span> -> (${count} items)`;
+  }
+}
