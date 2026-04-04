@@ -326,6 +326,23 @@ li a img {
   gap: 5px;
 }
 
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-left: 8px;
+  font-size: 0.9em;
+}
+
+.discount-badge {
+  display: inline-block;
+  background-color: #e63946;
+  color: white;
+  padding: 4px 8px;
+  font-size: 0.8em;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;
