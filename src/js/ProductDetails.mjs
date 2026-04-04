@@ -21,9 +21,11 @@ export default class ProductDetails {
   renderProductDetails() {
     productTemplate(this.product);
 
-    document
-      .getElementById("addToCart")
-      .addEventListener("click", this.addProductToCart.bind(this));
+    const button = document.getElementById("addToCart");
+
+    if (button) {
+    button.addEventListener("click", this.addProductToCart.bind(this));
+    }
   }
 
   addProductToCart() {
@@ -35,6 +37,7 @@ export default class ProductDetails {
       Name: this.product.Name,
       Image: this.product.Image,
       FinalPrice: this.product.FinalPrice,
+      SuggestedRetailPrice: this.product.SuggestedRetailPrice,
       Colors: this.product.Colors,
     };
 
@@ -60,19 +63,51 @@ export default class ProductDetails {
 
 // Template for product details
 function productTemplate(product) {
-  const parent = document.querySelector(".product-detail");
-
   if (!product) return;
+
+  const isDiscounted =
+    product.SuggestedRetailPrice &&
+    product.FinalPrice < product.SuggestedRetailPrice;
+
+  const discountPercent = isDiscounted
+    ? Math.round(
+        ((product.SuggestedRetailPrice - product.FinalPrice) /
+          product.SuggestedRetailPrice) *
+          100
+      )
+    : 0;
+
+  const savings = isDiscounted
+    ? (product.SuggestedRetailPrice - product.FinalPrice).toFixed(2)
+    : 0;
+
+  const parent = document.querySelector(".product-detail");
 
   const details = `
     <h3>${product.Name}</h3>
     <h2>${product.NameWithoutBrand}</h2>
+
     <img class="divider" src="${product.Image}" alt="${product.NameWithoutBrand}">
-    <p class="product-card__price">$${product.FinalPrice}</p>
-    <p class="product__color">${product.Colors?.[0]?.ColorName || "N/A"}</p>
+
+    <p class="product-card__price">
+      $${product.FinalPrice}
+      ${
+        isDiscounted
+          ? `
+        <span class="original-price">$${product.SuggestedRetailPrice}</span>
+        <span class="discount">-${discountPercent}%</span>
+        <span class="savings">Save $${savings}</span>
+      `
+          : ""
+      }
+    </p>
+
+    <p class="product__color">
+      ${product.Colors?.[0]?.ColorName || "No color"}
+    </p>
 
     <div class="product-detail__add">
-      <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
+      <button id="addToCart">Add to Cart</button>
     </div>
   `;
 
