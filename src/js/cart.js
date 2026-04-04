@@ -18,6 +18,18 @@ function renderCartContents() {
 }
 
 function cartItemTemplate(item) {
+  const isDiscounted =
+    item.SuggestedRetailPrice &&
+    item.FinalPrice < item.SuggestedRetailPrice;
+
+  const discountPercent = isDiscounted
+    ? Math.round(
+        ((item.SuggestedRetailPrice - item.FinalPrice) /
+          item.SuggestedRetailPrice) *
+          100
+      )
+    : 0;
+
   const newItem = `<li class="cart-card divider">
   <a href="#" class="cart-card__image">
     <img
@@ -30,7 +42,15 @@ function cartItemTemplate(item) {
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
   <p class="cart-card__quantity">qty: 1</p>
-  <p class="cart-card__price">$${item.FinalPrice}</p>
+  <p class="cart-card__price">
+  $${item.FinalPrice}
+  ${
+        isDiscounted
+          ? `<span class="original-price">$${item.SuggestedRetailPrice}</span>
+             <span class="discount">-${discountPercent}%</span>`
+          : ""
+      }
+  </p>
   <!-- dynamic ID -->
   <span class="remove-item" data-id="${item.Id}" title="Remove item">X</span>
 </li>`;

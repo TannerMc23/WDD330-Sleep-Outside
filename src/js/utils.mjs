@@ -5,6 +5,7 @@ export function qs(selector, parent = document) {
 // or a more concise version if you are into that sort of thing:
 // export const qs = (selector, parent = document) => parent.querySelector(selector);
 
+
 // retrieve data from localstorage
 export function getLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
@@ -76,12 +77,13 @@ export function alertMessage(message, scroll = true, duration = 3000) {
   alert.classList.add("alert");
   alert.innerHTML = `<p>${message}</p><span>X</span>`;
 
+  const main = document.querySelector("main");
   alert.addEventListener("click", function (e) {
-    if (e.target.tagName == "SPAN") {
+    if (e.target.tagName === "SPAN") {
       main.removeChild(this);
     }
   });
-  const main = document.querySelector("main");
+  
   main.prepend(alert);
   if (scroll) window.scrollTo(0, 0);
 
