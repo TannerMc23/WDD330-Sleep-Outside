@@ -29,13 +29,13 @@ export default class ProductDetails {
     const cartItems = getLocalStorage("so-cart") || [];
 
     const productToAdd = {
-    Id: this.product.Id,
-    Name: this.product.Name,
-    Image: this.product.Image,
-    FinalPrice: this.product.FinalPrice,
-    Colors: this.product.Colors
+      Id: this.product.Id,
+      Name: this.product.Name,
+      Image: this.product.Image,
+      FinalPrice: this.product.FinalPrice,
+      Colors: this.product.Colors,
     };
-    
+
     cartItems.push(productToAdd);
 
     setLocalStorage("so-cart", cartItems);
@@ -60,7 +60,7 @@ export default class ProductDetails {
 function productTemplate(product) {
   const parent = document.querySelector(".product-detail");
 
-  if(!product) return;
+  if (!product) return;
 
   const details = `
     <h3>${product.Name}</h3>

@@ -8,8 +8,8 @@ function renderCartContents() {
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector(".product-list").innerHTML = htmlItems.join("");
 
-   // attach events AFTER rendering
-  document.querySelectorAll(".remove-item").forEach(button => {
+  // attach events AFTER rendering
+  document.querySelectorAll(".remove-item").forEach((button) => {
     button.addEventListener("click", removeFromCart);
   });
 
@@ -54,15 +54,13 @@ function displayCartTotal(cartItems) {
   }
 }
 
-
-
 function removeFromCart(event) {
   const id = event.target.dataset.id;
 
   let cart = getLocalStorage("so-cart") || [];
 
   // ✅ remove item by Id
-  cart = cart.filter(item => item.Id != id);
+  cart = cart.filter((item) => item.Id != id);
 
   // ✅ save updated cart
   localStorage.setItem("so-cart", JSON.stringify(cart));

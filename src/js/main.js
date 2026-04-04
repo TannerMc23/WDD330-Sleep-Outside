@@ -1,18 +1,17 @@
 import { loadHeaderFooter } from "./utils.mjs";
 import ProductData from "./ProductData.mjs";
 import ProductList from "./ProductList.mjs";
-import Alert from './Alert.js';
+import Alert from "./Alert.js";
 
+document.addEventListener("DOMContentLoaded", () => {
+  loadHeaderFooter();
 
-loadHeaderFooter();
+  const dataSource = new ProductData("tents");
+  const element = document.querySelector(".product-list");
+  const productList = new ProductList("Tents", dataSource, element);
 
-const dataSource = new ProductData("tents");;
-const element = document.querySelector(".product-list");
-const productList = new ProductList("Tents", dataSource, element);
+  productList.init();
 
-productList.init();
-
-document.addEventListener('DOMContentLoaded', () => {
-  const alertSystem = new Alert('/src/public/json/alerts.json');
+  const alertSystem = new Alert("/src/public/json/alerts.json");
   alertSystem.init();
 });

@@ -155,7 +155,9 @@ button {
   font-weight: bold;
   cursor: pointer;
 
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 /* Hover effect (subtle, no animation needed) */
