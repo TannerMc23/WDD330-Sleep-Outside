@@ -39,13 +39,6 @@ export function renderListWithTemplate(template, parentElement, list, position =
   }
   parentElement.insertAdjacentHTML(position, htmlStrings.join(""));
 }
-// Counter cart
-
-export const CounterCart = (list,template)=>{
-  if(!list) return 0;
-  template.innerHTML = list.length;
-}
-
 
 export function renderWithTemplate(template, parentElement, data, callback) {
   parentElement.innerHTML = template;
@@ -53,6 +46,15 @@ export function renderWithTemplate(template, parentElement, data, callback) {
     callback(data);
   }
 }
+
+
+// Counter cart
+
+export const CounterCart = (list,template)=>{
+  if(!list) return 0;
+  template.innerHTML = list.length;
+}
+
 
 async function loadTemplate(path) {
   const res = await fetch(path);

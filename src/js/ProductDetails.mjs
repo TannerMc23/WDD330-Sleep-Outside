@@ -8,24 +8,22 @@ export default class ProductDetails {
   }
 
   async init() {
+    
     this.product = await this.dataSource.findProductById(this.productId);
 
     this.renderProductDetails();
-    this.cartcountrender();
+
+    /*this.cartcountrender();*/
 
     renderBreadcrumb(this.product.Category, null, true);
-
-    console.log(document.getElementById("addToCart"));
-  }
-
-  renderProductDetails() {
-    productTemplate(this.product);
 
     const button = document.getElementById("addToCart");
 
     if (button) {
     button.addEventListener("click", this.addProductToCart.bind(this));
     }
+
+    console.log(document.getElementById("addToCart"));
   }
 
   addProductToCart() {
@@ -51,6 +49,10 @@ export default class ProductDetails {
     this.cartcountrender();
   }
 
+  renderProductDetails() {
+    productDetailsTemplate(this.product);
+  }
+
   cartcountrender() {
     const cart = getLocalStorage("so-cart") || [];
     const cartcount = document.querySelector(".cart-count");
@@ -61,8 +63,53 @@ export default class ProductDetails {
   }
 }
 
+function productDetailsTemplate(product) {
+  if (!product) return;
+  const isDiscounted =
+    product.SuggestedRetailPrice &&
+    product.FinalPrice < product.SuggestedRetailPrice;
+
+  const discountPercent = isDiscounted
+    ? Math.round(
+        ((product.SuggestedRetailPrice - product.FinalPrice) /
+          product.SuggestedRetailPrice) *
+          100
+      )
+    : 0;
+
+  const savings = isDiscounted
+    ? (product.SuggestedRetailPrice - product.FinalPrice).toFixed(2)
+    : 0;
+
+  document.querySelector("h2").textContent = product.Brand.Name;
+  document.querySelector("h3").textContent = product.NameWithoutBrand;
+
+  const productImage = document.getElementById("productImage");
+  productImage.src = product.Image;
+  productImage.alt = product.NameWithoutBrand;
+
+  const priceElement = document.getElementById("productPrice");
+  priceElement.textContent = `$${product.FinalPrice}`;
+
+  if (isDiscounted) {
+    priceElement.innerHTML += `
+      <span class="original-price">$${product.SuggestedRetailPrice}</span>
+      <span class="discount">-${discountPercent}%</span>
+      <span class="savings">Save $${savings}</span>
+    `;
+  }
+
+  document.getElementById("productPrice").textContent = product.FinalPrice;
+  document.getElementById("productColor").textContent =
+    product.Colors?.[0]?.ColorName || "No color";
+  document.getElementById("productDesc").innerHTML = product.DescriptionHtmlSimple;
+
+  document.getElementById("addToCart").dataset.id = product.Id;
+}
+
+
 // Template for product details
-function productTemplate(product) {
+/*function productTemplate(product) {
   if (!product) return;
 
   const isDiscounted =
@@ -112,4 +159,4 @@ function productTemplate(product) {
   `;
 
   parent.innerHTML = details;
-}
+}*/
